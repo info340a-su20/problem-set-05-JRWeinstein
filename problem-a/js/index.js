@@ -25,7 +25,7 @@ imgElem.alt = "A beautiful rainbow";
 
 //Give the image the Bootstrap-provided `float-right` CSS class to make it float
 //to the right of the screen
-
+imgElem.classList.add('float-right');
 
 
 /*Define a function `createColorBox()` that takes in two parameters: a color 
@@ -40,7 +40,14 @@ shoukld do the following:
 You can test this function by logging out the returned value and checking its
 attributes.
 */
-
+function createColorBox(colorString, pixelVal) {
+  let divElem = document.createElement('div');
+  divElem.classList.add('d-inline-block');
+  divElem.style.backgroundColor = colorString;
+  divElem.style.width = pixelVal + "px";
+  divElem.style.height = pixelVal + "px";
+  return divElem;
+}
 
 
 /* Define a function `getElementWidth()` that takes in a DOM element (not a 
@@ -50,7 +57,9 @@ element.
    argument element. This method returns an Object containing the element's
    width and height. Return the `width` value of that object.
 */
-
+function getElementWidth(domElem) {
+  return domElem.getBoundingClientRect().width;
+}
 
 
 /* Define a function `renderPaletteRow()` that takes in two arguments: array of 
@@ -73,8 +82,14 @@ browser window unless you refresh.
 
 You should NOT include any test calls when running Jest tests!
 */
-
-
+function renderPaletteRow(colorArr, domElem) {
+  let divElem = document.createElement('div');
+  for (var i = 0; i < colorArr.length; i++) {
+    divElem.appendChild(createColorBox(colorArr[i], getElementWidth(domElem) / colorArr.length));
+  }
+  domElem.appendChild(divElem);
+}
+//console.log(renderPaletteRow(COLORS_9.Reds, document.getElementsById("main")));
 
 /* Define a function `renderPaletteTable()` that takes no arguments and renders 
 a color palette row for each of the palettes in the `COLORS_9` object into the 
@@ -86,8 +101,15 @@ Tip: note that `COLORS_9` is an object, not an array! You'll need to use a
 
 Call your `renderPaletteTable()` method to display all the color palettes!
 */
-
-
+function renderPaletteTable() {
+  let mainElem = document.querySelector("main");
+  Object.keys(COLORS_9).forEach(
+    function(x) {
+      renderPaletteRow(COLORS_9[x], mainElem);
+    }
+  );
+}
+renderPaletteTable();
 
 //Finally, remove the paragraph in the header that explains how to complete the 
 //problem.
